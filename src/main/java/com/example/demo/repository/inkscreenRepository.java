@@ -19,4 +19,6 @@ public interface inkscreenRepository extends JpaRepository<inkscreen,Long> {
 
     public  List<inkscreen>findAllByTUserAndFinish(TUser tUser,boolean finish);
 
+
+
 }

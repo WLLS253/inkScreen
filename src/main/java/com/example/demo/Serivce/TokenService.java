@@ -74,8 +74,11 @@ public class TokenService {
     public  String validateToken(String token, Long expiredSeconds) {
         Tokeners tokens = new Tokeners();
         tokens.setToken(token);
-        if (tokenersRepository.findAll(Example.of(tokens)).size() == 0)
+        List<Tokeners>tokenersList=tokenersRepository.findAllByToken(token);
+        if (tokenersList.size()==0) {
+            System.out.println("uuid==nill");
             return null;
+        }
         try {
             StringBuilder finalResultBuilder = new StringBuilder();
             for (int i = 0; i < token.length(); i++) {

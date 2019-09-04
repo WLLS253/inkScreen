@@ -3,8 +3,10 @@ package com.example.demo.Serivce;
 
 import com.example.demo.Result.Result;
 import com.example.demo.aspect.HttpAspect;
+import com.sun.deploy.panel.DeleteFilesDialog;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.lang3.time.DateUtils;
+import org.hibernate.sql.Delete;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -61,12 +63,27 @@ public class UploadSerivce {
         try {
             //transferTo（dest）方法将上传文件写到服务器上指定的文件
             file.transferTo(dest);
-            String filePathNew = SON_PATH + fileName;
+            String filePathNew = ROOT_PATH+SON_PATH + fileName;
 //            String profilePhoto = saveUploadFile(filePathNew);
 //            System.out.println(profilePhoto);
             return filePathNew;
         } catch (Exception e) {
             return dest.toString();
+        }
+
+
+    }
+
+    public boolean deleteimage(String fileName){
+        File file = new File(fileName);
+        if (!file.exists()) {
+            System.out.println("删除文件失败:" + fileName + "不存在！");
+            return false;
+        } else {
+            if (file.isFile())
+                return file.delete();
+            else
+                return false;
         }
 
 

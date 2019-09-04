@@ -15,4 +15,5 @@ public interface TUserRepository extends JpaRepository<TUser,Long> {
     public  TUser findByWechat(String wechat);
 
     public List<TUser>findByGrade(Integer grade);
+
 }

@@ -22,28 +22,24 @@
 //    @Autowired
 //    private TokenService tokenService;
 //
-//    @Autowired
-//    private CookieService cookieService;
 //    @Override
 //    public void init(FilterConfig filterConfig) {
 //        System.out.println("firstliter");
 //    }
 //
-//
 //    @Override
 //    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
 //        HttpServletRequest request = (HttpServletRequest) servletRequest;
 //        HttpServletResponse response=(HttpServletResponse)servletResponse;
-//        if(cookieService.getCookie(request,"username")==null){
-//
-//            loginRedirect(request,response);
-//        }
 //        request.setAttribute("user", "0");
 //        String token = request.getHeader("token");
+//        System.out.println(token);
 //        if (token != null) {
 //            String uuid = tokenService.validateToken(token, 24 * 3600L);
+//            System.out.println(uuid);
 //            if (uuid != null) request.setAttribute("user", uuid);
 //        }
+//        System.out.println("dofilterhhhhh");
 //        filterChain.doFilter(servletRequest, servletResponse);
 //    }
 //
@@ -52,38 +48,6 @@
 //        System.out.println("destroy");
 //    }
 //
-//
-//    public void loginRedirect(HttpServletRequest request, HttpServletResponse response) {
-//
-//        if (request.getMethod().equalsIgnoreCase("GET")) {
-//
-//            // 跳转地址
-//            String redirectUrl = request.getQueryString() != null ? request.getRequestURI() + "?" + request.getQueryString() : request.getRequestURI();
-//
-//            // 重定向
-//            try {
-//                response.sendRedirect(request.getContextPath() + "/login=" + URLEncoder.encode(redirectUrl, "utf-8"));
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        } else {
-//
-//            response.setCharacterEncoding("UTF-8");
-//            response.setContentType("application/json; charset=utf-8");
-//            response.setStatus(401);
-//            PrintWriter out = null;
-//            try {
-//                out = response.getWriter();
-//                out.append("{\"code\":401,\"msg\":\"未登录\"}");
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            } finally {
-//                if (out != null) {
-//                    out.close();
-//                }
-//            }
-//        }
-//    }
 //
 //
 //}

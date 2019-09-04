@@ -43,8 +43,6 @@ public class TUserController  {
         try {
             System.out.println(username);
             List<TUser> tUsers=tUserRepository.findByUsername(username);
-
-
             boolean valid = false;
             if (tUsers.size()!=0) {
                 if (tUsers.get(0).checkPassword(password)) {
@@ -69,7 +67,6 @@ public class TUserController  {
     @PostMapping(value = "/user/add")
     public Result addUser(TUser user,HttpServletResponse response) {
         try {
-
             user.setUsername(user.getUsername());
             user.setPasswordT(user.getPassword());
             user.setTel(user.getTel());
@@ -78,8 +75,12 @@ public class TUserController  {
             user.setWechat(user.getWechat());
             user.setQq(user.getQq());
             System.out.println(user);
+            TUser tUser=tUserRepository.save(user);
+            String token = tokenService.generateToken(String.valueOf(tUser.getId()));
+            response.setHeader("isLogin", "true");
+            response.setHeader("token", token);
             cookieService.writeCookie(response,"sessionid",user.getUsername());
-            return Util.success(tUserRepository.save(user));
+            return Util.success(user);
         }catch (Exception e){
             e.printStackTrace();
             return Util.failure(ExceptionEnums.UNKNOW_ERRPR);
@@ -95,7 +96,7 @@ public class TUserController  {
         try {
             TUser tUser1=tUserRepository.findById(id).get();
             tUser1.setUsername(tUser.getUsername());
-            tUser1.setPassword(tUser.getPassword());
+            tUser1.setPasswordT(tUser.getPassword());
             tUser1.setEmail(tUser.getEmail());
             tUser1.setQq(tUser.getQq());
             tUser1.setWechat(tUser.getWechat());
@@ -114,7 +115,7 @@ public class TUserController  {
             List<TUser> tUser1=tUserRepository.findByUsername(username);
             if(tUser1.size()>0){
                 TUser tUser=tUser1.get(0);
-                tUser.setPassword(password);
+                tUser.setPasswordT(password);
                 return  Util.success(tUserRepository.save(tUser));
             }else {
                 return Util.failure(ExceptionEnums.UNFIND_ERROR);
@@ -129,7 +130,7 @@ public class TUserController  {
 
 
 
-    @GetMapping(value = "/pc/list")
+    @GetMapping(value = "/pc/list/{id}")
     public String PCUserList() {
         return "hhhh";
     }

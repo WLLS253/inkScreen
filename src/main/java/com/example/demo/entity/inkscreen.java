@@ -3,6 +3,7 @@ package com.example.demo.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.springframework.format.annotation.DateTimeFormat;
+import sun.awt.SunHints;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -30,7 +31,10 @@ public class inkscreen extends BaseEntity {
     @Column(nullable = false)
     private String content;
 
-    private boolean isFinish;
+    @Column(nullable = true,insertable = false)
+    private boolean finish;
+
+
 
     @Column(nullable = true)
     @Temporal(TemporalType.TIMESTAMP)
@@ -79,11 +83,11 @@ public class inkscreen extends BaseEntity {
     }
 
     public boolean isFinish() {
-        return isFinish;
+        return finish;
     }
 
     public void setFinish(boolean finish) {
-        isFinish = finish;
+        this.finish = finish;
     }
 
     public Date getFinishTime() {
@@ -117,5 +121,20 @@ public class inkscreen extends BaseEntity {
 
     public void setSchedule(Schedule schedule) {
         this.schedule = schedule;
+    }
+
+    @Override
+    public String toString() {
+        return "inkscreen{" +
+                "ename='" + ename + '\'' +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
+                ", location='" + location + '\'' +
+                ", content='" + content + '\'' +
+                ", finish=" + finish +
+                ", finishTime=" + finishTime +
+                ", tUser=" + tUser +
+                ", schedule=" + schedule +
+                '}';
     }
 }

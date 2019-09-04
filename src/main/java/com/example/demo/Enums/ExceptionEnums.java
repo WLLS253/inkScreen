@@ -8,7 +8,8 @@ public enum ExceptionEnums {
     UNFIND_ERROR(110,"未发现记录"),
     PASS_ERROR(2,"用户名或密码错误"),
     USER_TEL_ERROR(3,"手机号错误"),
-    PASSWORD_ERROR(1,"用户名密码错误")
+    PASSWORD_ERROR(1,"用户名密码错误"),
+    LOGIN_ERROR(10,"登录错误，请重新登录")
 
     ;
 

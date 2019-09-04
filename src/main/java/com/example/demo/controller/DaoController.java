@@ -4,6 +4,7 @@ package com.example.demo.controller;
 import com.example.demo.Enums.ExceptionEnums;
 import com.example.demo.Result.Result;
 
+import com.example.demo.Serivce.UploadSerivce;
 import com.example.demo.Util.Util;
 import com.example.demo.entity.inkscreen;
 import com.example.demo.entity.Schedule;
@@ -13,6 +14,7 @@ import com.example.demo.repository.ScheduleRepository;
 import com.example.demo.repository.TUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -29,12 +31,15 @@ public class DaoController {
     @Autowired
     private TUserRepository tUserRepository;
 
+    @Autowired
+    private UploadSerivce uploadSerivce;
+
 
     @Autowired
     private ScheduleRepository scheduleRepository;
 
     @PostMapping(value = "/inkscreen/add")
-    public Result  addEvent(inkscreen inkscreen, @RequestParam("tuser_id")Long tuser_id ){
+    public Result  addEvent(inkscreen inkscreen, @RequestParam("tuser_id")Long tuser_id, @RequestParam("file")MultipartFile file){
         try {
             TUser tUser=tUserRepository.findById(tuser_id).get();
             Date date= inkscreen.getStartTime();
@@ -48,19 +53,25 @@ public class DaoController {
             Schedule schedule1=scheduleRepository.findAllByTUserAndAndDate(tUser,date).get(0);
             List<inkscreen> inkscreenList1 =schedule1.getInkscreenList();
             System.out.println(schedule1);
+            String  contengpath=uploadSerivce.upImageFire(file);
             inkscreen.setEname(inkscreen.getEname());
-            inkscreen.setContent(inkscreen.getContent());
+            inkscreen.setContent(contengpath);
             inkscreen.setEndTime(inkscreen.getEndTime());
             inkscreen.setStartTime(inkscreen.getStartTime());
             inkscreen.setLocation(inkscreen.getLocation());
-            inkscreen.setFinish(inkscreen.isFinish());
+//            System.out.println(inkscreen.isFinish());
+//            inkscreen.setFinish(inkscreen.isFinish());
+//            System.out.println(inkscreen.isFinish());
             List<inkscreen> inkscreenList =tUser.getInkscreens();
             System.out.println(inkscreenList);
             System.out.println(inkscreenList1);
+            System.out.println(inkscreen);
             inkscreenList.add(inkscreen);
             inkscreen.settUser(tUser);
+            System.out.println(inkscreen);
             tUser.setInkscreens(inkscreenList);
             System.out.println(inkscreenList);
+
             return Util.success(inkscreenRepository.save(inkscreen));
         }catch (Exception e){
             e.printStackTrace();
@@ -97,12 +108,14 @@ public class DaoController {
 
     }
 
-    @PutMapping(value = "/inkscreen/update/{id}")
-    public Result updateInk(@PathVariable("id")Long id,inkscreen inkscreen){
+    @PutMapping(value = "/inkscreen/updateink/{id}")
+    public Result updateInk(@PathVariable("id")Long id,inkscreen inkscreen,@RequestParam("file")MultipartFile file){
         try {
             inkscreen inkscreen1=inkscreenRepository.findById(id).get();
             inkscreen1.setLocation(inkscreen.getLocation());
-            inkscreen1.setContent(inkscreen.getContent());
+            uploadSerivce.deleteimage(inkscreen1.getContent());
+            String path=uploadSerivce.upImageFire(file);
+            inkscreen1.setContent(path);
             inkscreen1.setEname(inkscreen.getEname());
             inkscreen1.setEndTime(inkscreen.getEndTime());
             inkscreen1.setStartTime(inkscreen.getStartTime());
@@ -176,7 +189,7 @@ public class DaoController {
 //            return Util.failure(ExceptionEnums.UNKNOW_ERRPR);
 //        }
 //    }
-    //test 测试返回某人所控制的一天中的显示的屏幕
+    //TestJax 测试返回某人所控制的一天中的显示的屏幕
     @GetMapping(value = "/test/{name}/{date}")
     public Result testSch(@PathVariable("name") String name,@PathVariable("date") String date){
         try {

@@ -870,7 +870,7 @@ $(document).ready(function(){
 		
 		e.preventDefault();
 		
-		var url = $(this).attr('action');
+		var url = $(this).attr('http://localhost:8080/t/test/email');
 		
 		if($(this).find('input[type="text"]').val() == ''){
 			
@@ -889,6 +889,7 @@ $(document).ready(function(){
 				url: url,
 				data: $('#newsletter').serialize(), 
 				success: function(data){
+					console.log(data);
 				   $('#newsletter').find('>*').slideUp(300);
 				   $('#newsletter').append('<span>'+data+'</span>');
 				}

@@ -2,6 +2,7 @@ package com.example.demo.Handle;
 
 
 import com.example.demo.Exception.ClientException;
+import com.example.demo.Exception.LoginException;
 import com.example.demo.Result.Result;
 import com.example.demo.Util.Util;
 import org.slf4j.Logger;
@@ -20,9 +21,9 @@ public class ExceptionHandle {
     @ResponseBody
     public Result Exceptionhand(Exception e){
 
-        if(e instanceof ClientException){
-            ClientException clientException =(ClientException)e;
-            return Util.failure(clientException.getCode(), clientException.getMessage());
+        if(e instanceof LoginException){
+            LoginException loginException =(LoginException) e;
+            return Util.failure(loginException.getCode(), loginException.getMessage());
         }
         else {
             logger.info("系统异常{}",e);
